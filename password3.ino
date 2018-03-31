@@ -35,7 +35,7 @@ void loop()
       lcd.println("*Welcome Daniel*");
       delay(2000);
       lcd.clear();
-      lcd.print("*****Mayzlin****");
+      lcd.print("****Mayzlin****");
       delay(2000);
       lcd.clear();
       lcd.print("**Door is Open**");
