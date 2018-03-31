@@ -7,8 +7,7 @@ LiquidCrystal lcd(2,3,4,5,6,7);
 String password = "abc";
 unsigned long lastEnterTime;
 String passwordAdmin;
-int val;
-int tries;
+int tries = 0;
 void setup()
 {
   Serial.begin(9600);
@@ -28,6 +27,7 @@ void loop()
   if (Serial.available()>0) {
     passwordAdmin = Serial.readString();
     if (password == passwordAdmin) { 
+      tries = 0; // reset wrong try counter
       lastEnterTime = milis(); // Enter time record in miliseconds
       digitalWrite(led_r, LOW);
       digitalWrite(led_g, HIGH);
@@ -48,19 +48,24 @@ void loop()
       }
     }
     else {
-      for (tries=0; tries<3; tries++) {
-        lcd.clear();
-        lcd.println("*FALSE CODE!*");
-        delay(2000);
-        lcd.clear();
-        lcd.println("**TRY AGAIN**");
-        delay(2000);
-        lcd.clear();
-      }
+      tries++;
       lcd.clear();
-      lcd.println("Another Wrong Attempt");
+      lcd.println("*FALSE CODE!*");
       delay(2000);
-      sound_alarm();
+      lcd.clear();
+      lcd.println("**TRY AGAIN**");
+      delay(2000);
+      lcd.clear();
+      if (tries == 2) {
+        lcd.println("Another Wrong Attempt");
+        delay(2000);
+        lcd.clear();
+        lcd.println("The Siren Turns On!");
+        delay(1000);
+      }
+      if (tries == 3) {
+        sound_alarm();
+      }
     }
   }
 }
