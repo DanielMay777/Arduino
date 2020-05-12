@@ -1,35 +1,50 @@
-String passw="12345678";// משתנה שמגדיר שpassw בתור 12345678
+// Source for more info: https://www.arduino.cc/en/Tutorial/LiquidCrystalDisplay
+// definitions & includes
+#include <LiquidCrystal.h>
+#define PASSW "12345678"
+#define PASSADMIN "0000"
+
+# setting vars & creating lcd
 String parmeter;
-String passwordmin="0000";
+const int rs = 2, en = 3, d4 = 4, d5 = 5, d6 = 6, d7 = 7;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+
 void setup() 
 {
  Serial.begin(9600);
-  int tries=0;
+ lcd.begin(16,2);
+ int tries=0;
 }
 void loop() 
 {
- Serial.print("Enter password");
- byte string; 
- if(Serial.available()>0){
-string=Serial.read();
-switch (string){
-  case '0000':
-                 Serial.print("Hello Mr. Elay Eitach");
+  lcd.clear(); 
+  Serial.print("Enter password");
+  byte string; 
+  if(Serial.available()>0){
+    string=Serial.read();
+    switch (string){
+      case PASSADMIN:
+                  lcd.println("Hello Mr. Elay Eitach");
                   delay(500);
-                  Serial.print("No: 0524804696");
+                  lcd.clear();
+                  lcd.println("No: 0524804696");
                   delay(500);
+                  lcd.clear();
                   break;
-  case '12345678':
-                  Serial.print("Hello Mr. Daniel Mayzlin");
+      case PASSW:
+                  lcd.println("Hello Mr. Daniel Mayzlin");
                   delay(500);
-                  Serial.print("No: 0547541337");
+                  lcd.clear();
+                  lcd.println("No: 0547541337");
                   delay(500);
+                  lcd.clear();
                   break;
-  default:        
-                  Serial.print("Try again");
+      default:
+                  lcd.println("Try again"); // lcd clear will be done in the beginning of loop
                   delay(500);
                   tries++;
                   break;   
- }
- }
-}
+    }// end switch
+  }// end if
+}// end loop
